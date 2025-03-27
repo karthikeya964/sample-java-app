@@ -3,7 +3,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/karthikeya964/sample-java-app.git'
+                withCredentials([usernamePassword(credentialsId: 'Github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                    sh 'git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/karthikeya964/sample-java-app.git'
+                }
             }
         }
         stage('Build') {
@@ -19,7 +21,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
-                // Add deployment steps here (e.g., SCP, Docker push, etc.)
             }
         }
     }
